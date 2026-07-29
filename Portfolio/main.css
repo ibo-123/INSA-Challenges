@@ -3,186 +3,342 @@
         padding: 0;
         box-sizing: border-box;
 }
+
 html {
         scroll-behavior: smooth;
 }
+
 body {
-        font-family: Arial, sans-serif;
+        font-family: Arial, Helvetica, sans-serif;
         background: #f8fafc;
         color: #1f2937;
         line-height: 1.6;
 }
+
+/* ================= NAVBAR ================= */
+
 header {
         background: white;
         position: sticky;
         top: 0;
+        z-index: 100;
         border-bottom: 1px solid #ddd;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
+
 nav {
         width: 90%;
         max-width: 1100px;
         margin: auto;
+        padding: 20px 0;
+
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 20px 0;
 }
+
 nav h2 {
         color: #2563eb;
+        font-size: 28px;
 }
+
 nav ul {
         display: flex;
         list-style: none;
         gap: 25px;
 }
+
 nav a {
         text-decoration: none;
         color: #222;
         font-weight: bold;
+        transition: .3s;
 }
+
 nav a:hover {
         color: #2563eb;
 }
+
+/* ================= GENERAL ================= */
+
 section {
         width: 90%;
         max-width: 1100px;
         margin: auto;
         padding: 80px 0;
 }
+
 section>h2 {
         text-align: center;
+        font-size: 34px;
         margin-bottom: 40px;
-        font-size: 32px;
 }
+
+/* ================= HERO ================= */
+
 .hero {
         min-height: 90vh;
+
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 50px;
+
+        gap: 60px;
 }
+
+.hero h3 {
+        color: #666;
+}
+
 .hero h1 {
         font-size: 55px;
         margin: 15px 0;
 }
+
 .hero h2 {
         color: #2563eb;
+        margin-bottom: 20px;
 }
+
 .hero p {
-        color: #666;
-        margin: 20px 0;
+        color: #555;
+        margin-bottom: 30px;
 }
+
 .hero img {
         width: 320px;
         height: 320px;
+
         object-fit: cover;
         border-radius: 50%;
-        border: 5px solid white;
-        box-shadow: 0 10px 25px #ccc;
+
+        border: 6px solid white;
+
+        box-shadow: 0 15px 30px rgba(0, 0, 0, .2);
+
+        transition: .3s;
 }
+
+.hero img:hover {
+        transform: scale(1.05);
+}
+
+/* ================= BUTTONS ================= */
+
 .btns {
         display: flex;
         gap: 15px;
 }
+
 .btn {
         background: #2563eb;
         color: white;
-        padding: 12px 25px;
-        border-radius: 8px;
+
         text-decoration: none;
+
+        padding: 12px 25px;
+
+        border-radius: 8px;
+
+        transition: .3s;
 }
+
 .btn:hover {
         background: #1d4ed8;
+        transform: translateY(-3px);
 }
+
 .outline {
         background: white;
         color: #2563eb;
         border: 2px solid #2563eb;
 }
-#skillBox,
-#projectBox,
-.stats,
-#contactBox {
-        display: grid;
-        grid-template-columns:
-                repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
+
+.outline:hover {
+        color: white;
 }
-.card,
-.stats div {
-        background: white;
-        padding: 25px;
-        border-radius: 12px;
-        border: 1px solid #ddd;
-        transition: .3s;
-}
-.card:hover,
-.stats div:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px #ddd;
-}
-.card h3 {
-        margin-bottom: 10px;
-}
-.card p {
-        color: #666;
-}
-.card a {
-        color: #2563eb;
-        text-decoration: none;
-        font-weight: bold;
-}
+
+/* ================= ABOUT ================= */
+
 #about p {
         max-width: 750px;
         margin: auto;
         text-align: center;
         color: #555;
 }
+
+/* ================= GRID ================= */
+
+#skillBox,
+#projectBox,
+.stats,
+#contactBox {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+}
+
+/* ================= CARDS ================= */
+
+.card,
+.stats div {
+        background: white;
+
+        padding: 20px;
+
+        border: 1px solid #ddd;
+
+        border-radius: 12px;
+
+        transition: .3s;
+
+        overflow: hidden;
+}
+
+.card:hover,
+.stats div:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+}
+
+/* ================= PROJECT IMAGE ================= */
+
+.card img {
+        width: 100%;
+        height: 180px;
+
+        object-fit: cover;
+
+        border-radius: 10px;
+
+        margin-bottom: 15px;
+
+        transition: .3s;
+}
+
+.card:hover img {
+        transform: scale(1.05);
+}
+
+/* ================= CARD TEXT ================= */
+
+.card h3 {
+        margin-bottom: 10px;
+}
+
+.card p {
+        color: #666;
+        margin-bottom: 15px;
+}
+
+/* ================= BUTTONS INSIDE CARD ================= */
+
+.card a {
+        display: inline-block;
+
+        margin-top: 10px;
+        margin-right: 10px;
+
+        padding: 8px 15px;
+
+        background: #2563eb;
+        color: white;
+
+        text-decoration: none;
+
+        border-radius: 6px;
+
+        transition: .3s;
+}
+
+.card a:hover {
+        background: #1d4ed8;
+}
+
+/* ================= SKILLS ================= */
+
+#skillBox .card {
+        text-align: center;
+        font-weight: bold;
+}
+
+#skillBox .card:hover {
+        color: #2563eb;
+}
+
+/* ================= ACHIEVEMENTS ================= */
+
+.stats div {
+        text-align: center;
+}
+
+.stats h1 {
+        font-size: 42px;
+        color: #2563eb;
+}
+
+.stats p {
+        margin-top: 10px;
+        color: #555;
+}
+
+/* ================= CONTACT ================= */
+
+#contactBox .card {
+        text-align: center;
+}
+
+#contactBox h3 {
+        margin-bottom: 15px;
+}
+
+/* ================= FOOTER ================= */
+
 footer {
         background: white;
+        border-top: 1px solid #ddd;
 
         text-align: center;
 
         padding: 30px;
 
-        border-top: 1px solid #ddd;
+        margin-top: 50px;
 }
-@media(max-width:768px) {
+
+/* ================= MOBILE ================= */
+
+@media (max-width:768px) {
+
         nav {
                 flex-direction: column;
                 gap: 15px;
         }
+
         nav ul {
                 flex-wrap: wrap;
                 justify-content: center;
         }
+
         .hero {
                 flex-direction: column-reverse;
-
                 text-align: center;
         }
-        .hero h1 {
 
+        .hero h1 {
                 font-size: 40px;
         }
+
+        .hero h2 {
+                margin-bottom: 15px;
+        }
+
         .hero img {
                 width: 230px;
                 height: 230px;
         }
+
         .btns {
                 justify-content: center;
+                flex-wrap: wrap;
         }
-}
-.card img {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-        border-radius: 10px;
-        margin-bottom: 15px;
-}
-
-.card a {
-        display: inline-block;
-        margin-top: 10px;
-        margin-right: 10px;
 }

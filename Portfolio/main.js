@@ -1,17 +1,50 @@
 // Skills Data
 
 const skills = [
-    { name: "HTML", icon: "fa-brands fa-html5" },
-    { name: "CSS", icon: "fa-brands fa-css3-alt" },
-    { name: "JavaScript", icon: "fa-brands fa-js" },
-    { name: "React", icon: "fa-brands fa-react" },
-    { name: "Node.js", icon: "fa-brands fa-node-js" },
-    { name: "Git", icon: "fa-brands fa-git-alt" },
-    { name: "GitHub", icon: "fa-brands fa-github" },
-    { name: "Python", icon: "fa-brands fa-python" },
-    { name: "MongoDB", icon: "fa-solid fa-database" },
-    { name: "Express.js", icon: "fa-solid fa-server" },
-    { name: "C++", icon: "fa-solid fa-code" }
+    {
+        name: "HTML",
+        icon: "devicon-html5-plain colored"
+    },
+    {
+        name: "CSS",
+        icon: "devicon-css3-plain colored"
+    },
+    {
+        name: "JavaScript",
+        icon: "devicon-javascript-plain colored"
+    },
+    {
+        name: "React",
+        icon: "devicon-react-original colored"
+    },
+    {
+        name: "Node.js",
+        icon: "devicon-nodejs-plain colored"
+    },
+    {
+        name: "Express.js",
+        icon: "devicon-express-original"
+    },
+    {
+        name: "MongoDB",
+        icon: "devicon-mongodb-plain colored"
+    },
+    {
+        name: "C++",
+        icon: "devicon-cplusplus-plain colored"
+    },
+    {
+        name: "Python",
+        icon: "devicon-python-plain colored"
+    },
+    {
+        name: "Git",
+        icon: "devicon-git-plain colored"
+    },
+    {
+        name: "GitHub",
+        icon: "devicon-github-original"
+    }
 ];
 
 // Projects Data

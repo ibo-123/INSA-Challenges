@@ -1,18 +1,18 @@
 // Skills Data
 
 const skills = [
-    "HTML",
-    "CSS",
-    "JavaScript",
-    "React",
-    "Node.js",
-    "Express.js",
-    "MongoDB",
-    "C++",
-    "Python",
-    "Git"
+    { name: "HTML", icon: "fa-brands fa-html5" },
+    { name: "CSS", icon: "fa-brands fa-css3-alt" },
+    { name: "JavaScript", icon: "fa-brands fa-js" },
+    { name: "React", icon: "fa-brands fa-react" },
+    { name: "Node.js", icon: "fa-brands fa-node-js" },
+    { name: "Git", icon: "fa-brands fa-git-alt" },
+    { name: "GitHub", icon: "fa-brands fa-github" },
+    { name: "Python", icon: "fa-brands fa-python" },
+    { name: "MongoDB", icon: "fa-solid fa-database" },
+    { name: "Express.js", icon: "fa-solid fa-server" },
+    { name: "C++", icon: "fa-solid fa-code" }
 ];
-
 
 // Projects Data
 
@@ -73,12 +73,15 @@ skills.forEach(skill => {
 
     skillBox.innerHTML += `
         <div class="card">
-            <h3>${skill}</h3>
+
+            <i class="${skill.icon}"></i>
+
+            <h3>${skill.name}</h3>
+
         </div>
     `;
 
 });
-
 
 // Generate Projects
 

@@ -359,3 +359,21 @@ footer {
 #contactBox a {
         margin-top: 10px;
 }
+#skillBox .card {
+        text-align: center;
+}
+
+#skillBox i {
+        font-size: 50px;
+        color: #2563eb;
+        margin-bottom: 15px;
+        transition: .3s;
+}
+
+#skillBox .card:hover i {
+        transform: scale(1.2);
+}
+
+#skillBox h3 {
+        margin-top: 10px;
+}

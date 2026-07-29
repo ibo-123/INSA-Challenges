@@ -76,25 +76,35 @@ skills.forEach(skill => {
 
 // Generate Projects
 
-projectBox.innerHTML += `
-<div class="card">
+// Generate Projects
 
-    <img src="${project.image}" alt="${project.name}">
+const projectBox = document.getElementById("projectBox");
 
-    <h3>${project.name}</h3>
+projects.forEach(project => {
 
-    <p>${project.description}</p>
+    projectBox.innerHTML += `
+    
+    <div class="card">
 
-    <a href="${project.live}" target="_blank">
-        Live Demo
-    </a>
+        <img src="${project.image}" alt="${project.name}">
 
-    <a href="${project.github}" target="_blank">
-        GitHub
-    </a>
+        <h3>${project.name}</h3>
 
-</div>
-`;
+        <p>${project.description}</p>
+
+        <a href="${project.live}" target="_blank">
+            Live Demo
+        </a>
+
+        <a href="${project.github}" target="_blank">
+            GitHub
+        </a>
+
+    </div>
+
+    `;
+
+});
 
 
 // Generate Contacts

@@ -19,7 +19,7 @@ const skills = [
 const projects = [
 {
     name:"Code Track",
-    image:"images/code-track.png",
+    image:"codetrack.png",
     description:"Competitive Programming Tracker built using the MERN Stack.",
     live:"https://code-track-nine.vercel.app/",
     github:"https://github.com/ibo-123/Code-Track"
@@ -27,7 +27,7 @@ const projects = [
 
 {
     name:"Local Skill Freelance",
-    image:"images/local-skill.png",
+    image:"localskill.png",
     description:"A MERN platform connecting freelancers with clients.",
     live:"https://local-skill.onrender.com/",
     github:"#"

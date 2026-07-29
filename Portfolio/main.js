@@ -37,25 +37,31 @@ const projects = [
 // Contact Data
 
 const contacts = [
-    {
-        name:"GitHub",
-        link:"https://github.com/ibo-123"
-    },
-
-    {
-        name:"LinkedIn",
-        link:"https://www.linkedin.com/in/ibrahim-kedir-601420354/"
-    },
-
-    {
-        name:"Codeforces",
-        link:"https://codeforces.com/profile/ibrahimkediramdela2211"
-    },
-
-    {
-        name:"LeetCode",
-        link:"https://leetcode.com/u/ibro_man"
-    }
+{
+    name: "GitHub",
+    icon: "fa-brands fa-github",
+    link: "https://github.com/ibo-123"
+},
+{
+    name: "LinkedIn",
+    icon: "fa-brands fa-linkedin",
+    link: "https://www.linkedin.com/in/ibrahim-kedir-601420354/"
+},
+{
+    name: "Codeforces",
+    icon: "fa-solid fa-code",
+    link: "https://codeforces.com/profile/ibrahimkediramdela2211"
+},
+{
+    name: "LeetCode",
+    icon: "fa-solid fa-laptop-code",
+    link: "https://leetcode.com/u/ibro_man"
+},
+{
+    name: "Email",
+    icon: "fa-solid fa-envelope",
+    link: "mailto:ibrahimkediramdela2211@gmail.com"
+}
 ];
 
 
@@ -114,17 +120,17 @@ const contactBox = document.getElementById("contactBox");
 contacts.forEach(contact => {
 
     contactBox.innerHTML += `
+        <div class="card">
 
-    <div class="card">
+            <i class="${contact.icon}"></i>
 
-        <h3>${contact.name}</h3>
+            <h3>${contact.name}</h3>
 
-        <a href="${contact.link}" target="_blank">
-            Visit
-        </a>
+            <a href="${contact.link}" target="_blank">
+                Visit
+            </a>
 
-    </div>
-
+        </div>
     `;
 
 });

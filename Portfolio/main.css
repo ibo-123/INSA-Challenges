@@ -342,3 +342,20 @@ footer {
                 flex-wrap: wrap;
         }
 }
+#contactBox .card {
+        text-align: center;
+}
+
+#contactBox i {
+        font-size: 40px;
+        color: #2563eb;
+        margin-bottom: 15px;
+}
+
+#contactBox h3 {
+        margin-bottom: 10px;
+}
+
+#contactBox a {
+        margin-top: 10px;
+}

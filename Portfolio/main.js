@@ -17,23 +17,22 @@ const skills = [
 // Projects Data
 
 const projects = [
-    {
-        name: "Code Track",
-        description:
-        "Competitive Programming Tracker built with MERN Stack.",
-        link:
-        "https://code-track-nine.vercel.app/"
-    },
+{
+    name:"Code Track",
+    image:"images/code-track.png",
+    description:"Competitive Programming Tracker built using the MERN Stack.",
+    live:"https://code-track-nine.vercel.app/",
+    github:"https://github.com/ibo-123/Code-Track"
+},
 
-    {
-        name: "Local Skill Freelance",
-        description:
-        "A platform connecting freelancers with clients.",
-        link:
-        "https://local-skill.onrender.com/"
-    }
+{
+    name:"Local Skill Freelance",
+    image:"images/local-skill.png",
+    description:"A MERN platform connecting freelancers with clients.",
+    live:"https://local-skill.onrender.com/",
+    github:"#"
+}
 ];
-
 
 // Contact Data
 
@@ -77,29 +76,25 @@ skills.forEach(skill => {
 
 // Generate Projects
 
-const projectBox = document.getElementById("projectBox");
+projectBox.innerHTML += `
+<div class="card">
 
-projects.forEach(project => {
+    <img src="${project.image}" alt="${project.name}">
 
-    projectBox.innerHTML += `
+    <h3>${project.name}</h3>
 
-    <div class="card">
+    <p>${project.description}</p>
 
-        <h3>${project.name}</h3>
+    <a href="${project.live}" target="_blank">
+        Live Demo
+    </a>
 
-        <p>
-            ${project.description}
-        </p>
+    <a href="${project.github}" target="_blank">
+        GitHub
+    </a>
 
-        <a href="${project.link}" target="_blank">
-            Live Demo
-        </a>
-
-    </div>
-
-    `;
-
-});
+</div>
+`;
 
 
 // Generate Contacts

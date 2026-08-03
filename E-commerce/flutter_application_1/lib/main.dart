@@ -1,0 +1,33 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "My First App",
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text("Flutter Basics"),
+          backgroundColor: Colors.blue,
+        ),
+        body: const Center(
+          child: Text(
+            "Hello Ibrahim!",
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

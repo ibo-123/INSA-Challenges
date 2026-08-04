@@ -1,5 +1,5 @@
 {
-        "buildCommand": "cd \"Ibrahim Portfolio/frontend\" && npm run build",
-        "outputDirectory": "Ibrahim Portfolio/frontend/dist",
-        "installCommand": "cd \"Ibrahim Portfolio/frontend\" && npm install"
+        "buildCommand": "cd \"Ibrahim Portfolio/public\" && npm run build",
+        "outputDirectory": "Ibrahim Portfolio/public/dist",
+        "installCommand": "cd \"Ibrahim Portfolio/public\" && npm install"
 }

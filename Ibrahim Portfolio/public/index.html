@@ -1,41 +1,200 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Skill Icon Picker</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ibrahim Kedir | Portfolio</title>
+
+    <meta name="description"
+        content="Portfolio of Ibrahim Kedir, MERN Stack Developer and Competitive Programmer.">
+
+    <link rel="icon" href="assets/favicon.ico">
+
+    <link rel="stylesheet" href="main.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
 </head>
 
 <body>
 
-<h2>Add Skill</h2>
+    <!-- ================= HEADER ================= -->
 
-<input 
-    id="skillName"
-    placeholder="Skill name"
->
+    <header>
 
+        <nav>
 
-<input 
-    id="searchIcon"
-    placeholder="Search icon..."
->
+            <h2>IK.</h2>
 
+            <ul>
 
-<div id="iconContainer"></div>
+                <li><a href="#home" class = "btn card outline">Home</a></li>
 
+                <li><a href="#about" class = "btn card outline">About</a></li>
 
-<input 
-    id="selectedIcon"
-    type="hidden"
->
+                <li><a href="#skills" class = "btn card outline">Skills</a></li>
 
+                <li><a href="#projects" class = "btn card outline">Projects</a></li>
 
-<button onclick="saveSkill()">
-    Save Skill
-</button>
+                <li><a href="#achievements" class = "btn card outline">Achievements</a></li>
 
+                <li><a href="#contact" class = "btn card outline">Contact</a></li>
+                <li><a href="./setting.html" class = "btn card outline">Setting</a></li>
 
-<script src="script.js"></script>
+            </ul>
+
+        </nav>
+
+    </header>
+
+    <!-- ================= MAIN ================= -->
+
+    <main>
+
+        <!-- Hero -->
+
+        <section id="home" class="hero">
+
+            <div>
+
+                <h3>Hello, I'm</h3>
+
+                <h1>Ibrahim Kedir</h1>
+
+                <h2></h2>
+
+                <p>
+                    Software Engineering student at ASTU passionate about
+                    Competitive Programming and MERN Stack Web Development.
+                </p>
+
+                <div class="btns">
+
+                    <a href="#projects" class="btn">
+                        View Projects
+                    </a>
+
+                    <a href="assets/resume.pdf"
+                        class="btn outline"
+                        download>
+                        Download CV
+                    </a>
+
+                </div>
+
+            </div>
+
+            <img
+                src="ibo.png"
+                alt="Ibrahim Kedir"
+                loading="lazy">
+
+        </section>
+
+        <!-- About -->
+
+        <section id="about">
+
+            <h2>About Me</h2>
+
+            <p>
+                I am a Software Engineering student at ASTU with a strong
+                interest in Competitive Programming and Full-Stack Web
+                Development. I have solved more than
+                <b>800</b> programming problems and enjoy building scalable
+                web applications using the MERN Stack while continuously
+                improving my problem-solving skills.
+            </p>
+
+        </section>
+
+        <!-- Skills -->
+
+        <section id="skills">
+
+            <h2>Skills</h2>
+
+            <div id="skillBox"></div>
+
+        </section>
+
+        <!-- Projects -->
+
+        <section id="projects">
+
+            <h2>Projects</h2>
+
+            <div id="projectBox"></div>
+
+        </section>
+
+        <!-- Achievements -->
+
+        <section id="achievements">
+
+            <h2>Achievements</h2>
+
+            <div class="stats">
+
+                <div>
+
+                    <h1>800+</h1>
+
+                    <p>Problems Solved</p>
+
+                </div>
+
+                <div>
+
+                    <h1>2+</h1>
+
+                    <p>MERN Projects</p>
+
+                </div>
+
+                <div>
+
+                    <h1>ASTU</h1>
+
+                    <p>Software Engineering</p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Contact -->
+
+        <section id="contact">
+
+            <h2>Contact</h2>
+
+            <div id="contactBox"></div>
+
+        </section>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>© 2026 Ibrahim Kedir</p>
+
+        <p>
+            Built with HTML, CSS & JavaScript
+        </p>
+
+    </footer>
+
+    <script src="main.js"></script>
 
 </body>
+
 </html>

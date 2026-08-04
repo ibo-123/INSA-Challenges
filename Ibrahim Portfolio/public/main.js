@@ -36,7 +36,11 @@ async function loadProfile() {
 
         const res = await fetch(`${API}/profile`);
         const result = await res.json();
+const aboutText = document.getElementById("aboutText");
 
+if (aboutText) {
+    aboutText.textContent = portfolio.profile.AboutMe || "";
+}
         if (!result.success) return;
 
         portfolio.profile = result.data;

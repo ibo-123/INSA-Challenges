@@ -1,4 +1,5 @@
 {
         "version": 2,
-        "outputDirectory": "public"
+        "public": true,
+        "cleanUrls": false
 }

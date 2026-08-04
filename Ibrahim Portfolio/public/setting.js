@@ -1,4 +1,4 @@
-const API = "https://ibrahim-portfolio-dk91.onrender.com";
+const API = "https://ibrahim-portfolio-dk91.onrender.com/api";
 
 
 // ================= PROFILE =================

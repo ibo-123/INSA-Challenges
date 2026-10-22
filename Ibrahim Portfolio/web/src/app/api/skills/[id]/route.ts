@@ -11,9 +11,15 @@ export async function PUT(req: NextRequest, { params }: Params) {
   try {
     await connectDB();
     const { id } = await params;
-    const { name, icon, level, category } = await req.json();
+    const body = await req.json();
+    const { name, icon, level, category } = body;
 
-    if (!name && !icon && !level && category === undefined) {
+    if (
+      name === undefined &&
+      icon === undefined &&
+      level === undefined &&
+      category === undefined
+    ) {
       return NextResponse.json(
         {
           success: false,
@@ -33,15 +39,16 @@ export async function PUT(req: NextRequest, { params }: Params) {
       }
     }
 
+    const update: Record<string, unknown> = {};
+    if (name !== undefined) update.name = name;
+    if (icon !== undefined) update.icon = icon || null;
+    if (level !== undefined) update.level = level;
+    if (category !== undefined) update.category = category;
+
     const skill = await Skill.findByIdAndUpdate(
       id,
-      {
-        ...(name !== undefined && { name }),
-        ...(icon !== undefined && { icon }),
-        ...(level !== undefined && { level }),
-        ...(category !== undefined && { category }),
-      },
-      { new: true, runValidators: true }
+      { $set: update },
+      { returnDocument: "after", runValidators: true }
     );
 
     if (!skill) {

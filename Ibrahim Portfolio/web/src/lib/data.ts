@@ -4,16 +4,11 @@ import {
   fallbackProjects,
   fallbackSkills,
 } from "@/lib/seed";
+import { normalizeExternalUrl, normalizeImagePath } from "@/lib/urls";
 import Profile from "@/models/Profile";
 import Project from "@/models/Project";
 import Skill from "@/models/Skill";
 import type { Profile as ProfileType, Project as ProjectType, Skill as SkillType } from "@/types/portfolio";
-
-function normalizeImage(src?: string) {
-  if (!src) return "/ibo.png";
-  if (src.startsWith("http") || src.startsWith("/")) return src;
-  return `/${src}`;
-}
 
 export async function getPortfolioData(): Promise<{
   profile: ProfileType;
@@ -33,7 +28,7 @@ export async function getPortfolioData(): Promise<{
       ? ({
           ...profileDoc,
           _id: String(profileDoc._id),
-          profileImage: normalizeImage(profileDoc.profileImage),
+          profileImage: normalizeImagePath(profileDoc.profileImage),
         } as ProfileType)
       : fallbackProfile;
 
@@ -50,7 +45,9 @@ export async function getPortfolioData(): Promise<{
         ({
           ...p,
           _id: p._id ? String(p._id) : undefined,
-          image: normalizeImage(p.image),
+          image: normalizeImagePath(p.image),
+          live: normalizeExternalUrl(p.live),
+          github: normalizeExternalUrl(p.github),
         }) as ProjectType
     );
 

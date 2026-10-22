@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAdminRequest, unauthorized } from "@/lib/auth";
 import { connectDB } from "@/lib/db";
+import { normalizeExternalUrl, normalizeImagePath } from "@/lib/urls";
 import Project from "@/models/Project";
 
 export async function GET() {
@@ -47,10 +48,10 @@ export async function POST(req: NextRequest) {
     const project = await Project.create({
       name,
       description,
-      image,
+      image: normalizeImagePath(image),
       technologies: technologies || [],
-      live,
-      github,
+      live: normalizeExternalUrl(live),
+      github: normalizeExternalUrl(github),
       featured: featured || false,
     });
 

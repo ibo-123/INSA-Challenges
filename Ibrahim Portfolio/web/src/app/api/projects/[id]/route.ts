@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAdminRequest, unauthorized } from "@/lib/auth";
 import { connectDB } from "@/lib/db";
+import { normalizeExternalUrl, normalizeImagePath } from "@/lib/urls";
 import Project from "@/models/Project";
 
 type Params = { params: Promise<{ id: string }> };
@@ -11,6 +12,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
   try {
     await connectDB();
     const { id } = await params;
+    const body = await req.json();
     const {
       name,
       description,
@@ -19,15 +21,15 @@ export async function PUT(req: NextRequest, { params }: Params) {
       live,
       github,
       featured,
-    } = await req.json();
+    } = body;
 
     if (
-      !name &&
-      !description &&
-      !image &&
-      !technologies &&
-      !live &&
-      !github &&
+      name === undefined &&
+      description === undefined &&
+      image === undefined &&
+      technologies === undefined &&
+      live === undefined &&
+      github === undefined &&
       featured === undefined
     ) {
       return NextResponse.json(
@@ -49,18 +51,19 @@ export async function PUT(req: NextRequest, { params }: Params) {
       }
     }
 
+    const update: Record<string, unknown> = {};
+    if (name !== undefined) update.name = name;
+    if (description !== undefined) update.description = description;
+    if (image !== undefined) update.image = normalizeImagePath(image);
+    if (technologies !== undefined) update.technologies = technologies;
+    if (live !== undefined) update.live = normalizeExternalUrl(live);
+    if (github !== undefined) update.github = normalizeExternalUrl(github);
+    if (featured !== undefined) update.featured = featured;
+
     const project = await Project.findByIdAndUpdate(
       id,
-      {
-        ...(name && { name }),
-        ...(description && { description }),
-        ...(image && { image }),
-        ...(technologies && { technologies }),
-        ...(live && { live }),
-        ...(github && { github }),
-        ...(featured !== undefined && { featured }),
-      },
-      { new: true, runValidators: true }
+      { $set: update },
+      { returnDocument: "after", runValidators: true }
     );
 
     if (!project) {

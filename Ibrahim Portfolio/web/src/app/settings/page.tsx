@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useCallback, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import type { Profile, Project, Skill } from "@/types/portfolio";
+import { normalizeExternalUrl, normalizeImagePath } from "@/lib/urls";
 
 const emptyProfile: Profile = {
   name: "",
@@ -13,6 +14,23 @@ const emptyProfile: Profile = {
   university: "",
   email: "",
   socialLinks: { github: "", linkedin: "", codeforces: "", leetcode: "" },
+};
+
+const emptySkillForm = {
+  name: "",
+  icon: "",
+  category: "Programming",
+  level: "Intermediate",
+};
+
+const emptyProjectForm = {
+  name: "",
+  description: "",
+  image: "",
+  technologies: "",
+  live: "",
+  github: "",
+  featured: false,
 };
 
 export default function SettingsPage() {
@@ -27,22 +45,14 @@ export default function SettingsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [status, setStatus] = useState("");
 
-  const [skillForm, setSkillForm] = useState({
-    name: "",
-    icon: "",
-    category: "Programming",
-    level: "Intermediate",
-  });
+  const [skillForm, setSkillForm] = useState(emptySkillForm);
+  const [editingSkillId, setEditingSkillId] = useState<string | null>(null);
 
-  const [projectForm, setProjectForm] = useState({
-    name: "",
-    description: "",
-    image: "",
-    technologies: "",
-    live: "",
-    github: "",
-    featured: false,
-  });
+  const [projectForm, setProjectForm] = useState(emptyProjectForm);
+  const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
+
+  const skillFormRef = useRef<HTMLElement>(null);
+  const projectFormRef = useRef<HTMLElement>(null);
 
   const loadAll = useCallback(async () => {
     const [pRes, sRes, jRes] = await Promise.all([
@@ -55,9 +65,28 @@ export default function SettingsPage() {
     const sJson = await sRes.json();
     const jJson = await jRes.json();
 
-    if (pJson.success && pJson.data) setProfile(pJson.data);
-    if (sJson.success) setSkills(sJson.data || []);
-    if (jJson.success) setProjects(jJson.data || []);
+    if (pJson.success && pJson.data) {
+      setProfile({
+        ...pJson.data,
+        _id: pJson.data._id ? String(pJson.data._id) : undefined,
+      });
+    }
+    if (sJson.success) {
+      setSkills(
+        (sJson.data || []).map((skill: Skill) => ({
+          ...skill,
+          _id: skill._id ? String(skill._id) : undefined,
+        }))
+      );
+    }
+    if (jJson.success) {
+      setProjects(
+        (jJson.data || []).map((project: Project) => ({
+          ...project,
+          _id: project._id ? String(project._id) : undefined,
+        }))
+      );
+    }
   }, []);
 
   useEffect(() => {
@@ -77,6 +106,15 @@ export default function SettingsPage() {
 
     checkAuth().catch(console.error);
   }, [loadAll]);
+
+  function handleUnauthorized(res: Response) {
+    if (res.status === 401) {
+      setAuthenticated(false);
+      setStatus("Session expired. Please log in again.");
+      return true;
+    }
+    return false;
+  }
 
   async function handleLogin(e: FormEvent) {
     e.preventDefault();
@@ -110,6 +148,8 @@ export default function SettingsPage() {
     await fetch("/api/auth/logout", { method: "POST" });
     setAuthenticated(false);
     setStatus("");
+    setEditingSkillId(null);
+    setEditingProjectId(null);
   }
 
   async function saveProfile(e: FormEvent) {
@@ -120,80 +160,154 @@ export default function SettingsPage() {
       body: JSON.stringify(profile),
     });
     const result = await res.json();
-    if (res.status === 401) {
-      setAuthenticated(false);
-      setStatus("Session expired. Please log in again.");
-      return;
-    }
-    setStatus(result.message || (result.success ? "Profile updated" : "Update failed"));
+    if (handleUnauthorized(res)) return;
+    setStatus(
+      result.message || (result.success ? "Profile updated" : "Update failed")
+    );
   }
 
-  async function addSkill(e: FormEvent) {
-    e.preventDefault();
-    const res = await fetch("/api/skills", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(skillForm),
-    });
-    if (res.status === 401) {
-      setAuthenticated(false);
+  function startEditSkill(skill: Skill) {
+    const id = skill._id ? String(skill._id) : "";
+    if (!id) {
+      setStatus("Cannot edit this skill: missing id");
       return;
     }
+    setEditingSkillId(id);
     setSkillForm({
-      name: "",
-      icon: "",
-      category: "Programming",
-      level: "Intermediate",
+      name: skill.name || "",
+      icon: skill.icon || "",
+      category: skill.category || "Programming",
+      level: skill.level || "Intermediate",
     });
+    setStatus(`Editing skill: ${skill.name}`);
+    requestAnimationFrame(() => {
+      skillFormRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  function cancelEditSkill() {
+    setEditingSkillId(null);
+    setSkillForm(emptySkillForm);
+    setStatus("");
+  }
+
+  async function saveSkill(e: FormEvent) {
+    e.preventDefault();
+
+    const res = editingSkillId
+      ? await fetch(`/api/skills/${editingSkillId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(skillForm),
+        })
+      : await fetch("/api/skills", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(skillForm),
+        });
+
+    const result = await res.json();
+    if (handleUnauthorized(res)) return;
+
+    if (!res.ok || !result.success) {
+      setStatus(result.message || "Skill save failed");
+      return;
+    }
+
+    setStatus(editingSkillId ? "Skill updated" : "Skill added");
+    setEditingSkillId(null);
+    setSkillForm(emptySkillForm);
     await loadAll();
   }
 
   async function deleteSkill(id?: string) {
     if (!id) return;
     const res = await fetch(`/api/skills/${id}`, { method: "DELETE" });
-    if (res.status === 401) {
-      setAuthenticated(false);
-      return;
-    }
+    if (handleUnauthorized(res)) return;
+    if (editingSkillId === id) cancelEditSkill();
+    setStatus("Skill deleted");
     await loadAll();
   }
 
-  async function addProject(e: FormEvent) {
-    e.preventDefault();
-    const res = await fetch("/api/projects", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...projectForm,
-        technologies: projectForm.technologies
-          .split(",")
-          .map((t) => t.trim())
-          .filter(Boolean),
-      }),
-    });
-    if (res.status === 401) {
-      setAuthenticated(false);
+  function startEditProject(project: Project) {
+    const id = project._id ? String(project._id) : "";
+    if (!id) {
+      setStatus("Cannot edit this job: missing id");
       return;
     }
+    setEditingProjectId(id);
     setProjectForm({
-      name: "",
-      description: "",
-      image: "",
-      technologies: "",
-      live: "",
-      github: "",
-      featured: false,
+      name: project.name || "",
+      description: project.description || "",
+      image: project.image || "",
+      technologies: (project.technologies || []).join(", "),
+      live: project.live || "",
+      github: project.github || "",
+      featured: Boolean(project.featured),
     });
+    setStatus(`Editing job: ${project.name}`);
+    requestAnimationFrame(() => {
+      projectFormRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  }
+
+  function cancelEditProject() {
+    setEditingProjectId(null);
+    setProjectForm(emptyProjectForm);
+    setStatus("");
+  }
+
+  async function saveProject(e: FormEvent) {
+    e.preventDefault();
+
+    const payload = {
+      name: projectForm.name.trim(),
+      description: projectForm.description.trim(),
+      image: normalizeImagePath(projectForm.image.trim()),
+      technologies: projectForm.technologies
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean),
+      live: normalizeExternalUrl(projectForm.live.trim()),
+      github: normalizeExternalUrl(projectForm.github.trim()),
+      featured: Boolean(projectForm.featured),
+    };
+
+    const res = editingProjectId
+      ? await fetch(`/api/projects/${editingProjectId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        })
+      : await fetch("/api/projects", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+    const result = await res.json().catch(() => ({}));
+    if (handleUnauthorized(res)) return;
+
+    if (!res.ok || !result.success) {
+      setStatus(result.message || `Job save failed (${res.status})`);
+      return;
+    }
+
+    setStatus(editingProjectId ? "Job updated successfully" : "Job added");
+    setEditingProjectId(null);
+    setProjectForm(emptyProjectForm);
     await loadAll();
   }
 
   async function deleteProject(id?: string) {
     if (!id) return;
     const res = await fetch(`/api/projects/${id}`, { method: "DELETE" });
-    if (res.status === 401) {
-      setAuthenticated(false);
-      return;
-    }
+    if (handleUnauthorized(res)) return;
+    if (editingProjectId === id) cancelEditProject();
+    setStatus("Job deleted");
     await loadAll();
   }
 
@@ -376,9 +490,9 @@ export default function SettingsPage() {
           </form>
         </section>
 
-        <section className="settings-card">
-          <h2>Skills</h2>
-          <form onSubmit={addSkill}>
+        <section className="settings-card" ref={skillFormRef} id="skill-form">
+          <h2>{editingSkillId ? "Edit Skill" : "Skills"}</h2>
+          <form onSubmit={saveSkill}>
             <label>Skill Name</label>
             <input
               value={skillForm.name}
@@ -424,33 +538,60 @@ export default function SettingsPage() {
                 <option key={l}>{l}</option>
               ))}
             </select>
-            <button type="submit">Add Skill</button>
+            <div className="settings-actions">
+              <button type="submit">
+                {editingSkillId ? "Save Skill Changes" : "Add Skill"}
+              </button>
+              {editingSkillId && (
+                <button
+                  type="button"
+                  className="settings-btn-secondary"
+                  onClick={cancelEditSkill}
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
           </form>
 
           <div className="mt-4">
             {skills.map((skill) => (
-              <div key={skill._id || skill.name} className="settings-item">
+              <div
+                key={skill._id || skill.name}
+                className={`settings-item ${
+                  editingSkillId === skill._id ? "is-editing" : ""
+                }`}
+              >
                 <div>
                   <h3 className="font-semibold">{skill.name}</h3>
                   <p className="text-sm text-[var(--muted)]">
                     {skill.level} · {skill.category}
                   </p>
                 </div>
-                <button
-                  type="button"
-                  className="delete"
-                  onClick={() => deleteSkill(skill._id)}
-                >
-                  Delete
-                </button>
+                <div className="settings-item-actions">
+                  <button
+                    type="button"
+                    className="edit"
+                    onClick={() => startEditSkill(skill)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    className="delete"
+                    onClick={() => deleteSkill(skill._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="settings-card">
-          <h2>Jobs / Projects</h2>
-          <form onSubmit={addProject}>
+        <section className="settings-card" ref={projectFormRef} id="job-form">
+          <h2>{editingProjectId ? "Edit Job" : "Jobs / Projects"}</h2>
+          <form onSubmit={saveProject}>
             <label>Job Name</label>
             <input
               value={projectForm.name}
@@ -512,25 +653,52 @@ export default function SettingsPage() {
               />
               Featured job
             </label>
-            <button type="submit">Add Job</button>
+            <div className="settings-actions">
+              <button type="submit">
+                {editingProjectId ? "Save Job Changes" : "Add Job"}
+              </button>
+              {editingProjectId && (
+                <button
+                  type="button"
+                  className="settings-btn-secondary"
+                  onClick={cancelEditProject}
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
           </form>
 
           <div className="mt-4">
             {projects.map((project) => (
-              <div key={project._id || project.name} className="settings-item">
+              <div
+                key={project._id || project.name}
+                className={`settings-item ${
+                  editingProjectId === project._id ? "is-editing" : ""
+                }`}
+              >
                 <div>
                   <h3 className="font-semibold">{project.name}</h3>
                   <p className="text-sm text-[var(--muted)] line-clamp-2">
                     {project.description}
                   </p>
                 </div>
-                <button
-                  type="button"
-                  className="delete"
-                  onClick={() => deleteProject(project._id)}
-                >
-                  Delete
-                </button>
+                <div className="settings-item-actions">
+                  <button
+                    type="button"
+                    className="edit"
+                    onClick={() => startEditProject(project)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    className="delete"
+                    onClick={() => deleteProject(project._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             ))}
           </div>

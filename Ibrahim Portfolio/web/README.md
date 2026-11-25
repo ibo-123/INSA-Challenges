@@ -20,6 +20,20 @@ Set in `.env.local`:
 - `ADMIN_PASSWORD` — your private settings password
 - `ADMIN_SECRET` — cookie signing secret
 
+## Deploy on Vercel
+
+In the Vercel project linked to `INSA-Challenges`:
+
+1. **Settings → General → Root Directory** → set to:
+   `Ibrahim Portfolio/web`
+   (not `Ibrahim Portfolio/public` — that folder no longer exists)
+2. Framework Preset: **Next.js**
+3. **Settings → Environment Variables** add:
+   - `MONGO_URI`
+   - `ADMIN_PASSWORD`
+   - `ADMIN_SECRET`
+4. Redeploy
+
 ## API routes
 
 - `GET /api/profile` · `POST/PUT` (admin only)

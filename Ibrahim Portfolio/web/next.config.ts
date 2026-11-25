@@ -2,10 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      { protocol: "https", hostname: "**" },
-      { protocol: "http", hostname: "**" },
-    ],
+    // Local + arbitrary remote URLs from portfolio settings
+    unoptimized: true,
   },
   turbopack: {
     rules: {

@@ -25,8 +25,8 @@ Set in `.env.local`:
 In the Vercel project linked to `INSA-Challenges`:
 
 1. **Settings → General → Root Directory** → set to:
-   `Ibrahim Portfolio/web`
-   (not `Ibrahim Portfolio/public` — that folder no longer exists)
+   `Ibrahim-Portfolio/web`
+   (not `Ibrahim Portfolio/public` — that old path no longer exists)
 2. Framework Preset: **Next.js**
 3. **Settings → Environment Variables** add:
    - `MONGO_URI`
